@@ -306,10 +306,11 @@ def create_dmrn(
     modification_type=None,
     reason_for_change=None,
     nature_of_change=None,
+    remark=None,
     file_name=None,
     file_content=None
 ):
-
+    frappe.log_error("DEBUG REMARK RECEIVED", str(remark))
     dmrn = frappe.new_doc("DMRN")
 
     dmrn.posting_date = frappe.utils.today()
@@ -319,7 +320,7 @@ def create_dmrn(
     dmrn.design_engineer = design_engineer
     dmrn.to_department = to_department
     dmrn.type = modification_type
-
+    dmrn.remarks=remark
     # Child row
     child = dmrn.append("dmrn_details", {
         "item_code": item_code,
@@ -327,7 +328,8 @@ def create_dmrn(
         "new_revision": new_revision,
         "posting_date": frappe.utils.today(),
         "change_reason": reason_for_change,
-        "change_nature": nature_of_change
+        "change_nature": nature_of_change,
+        "remarks":remark
     })
 
     # Insert parent first
